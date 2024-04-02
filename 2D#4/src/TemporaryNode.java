@@ -195,6 +195,9 @@ public class TemporaryNode implements TemporaryNodeInterface {
             //String value = "Hello\nWorld!";
             String value = node.get(key);
             System.out.println(value);
+
+            node.store("key1\nkey2","value1\nvalue2");
+            System.out.println(node.get("key1\nkey2"));
             /*
             if (success) {
                 System.out.println("Successfully stored the key-value pair.");
