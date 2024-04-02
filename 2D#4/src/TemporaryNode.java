@@ -105,6 +105,7 @@ public class TemporaryNode implements TemporaryNodeInterface {
             return null;
         }
     }
+
     private void sendMessage(String message) {
         String[] lines = message.split("\n");
         for (String line : lines) {
@@ -159,6 +160,7 @@ public class TemporaryNode implements TemporaryNodeInterface {
             System.err.println("Error finding the nearest nodes: " + e.getMessage());
         }
     }
+
     public void notifyNode(String nodeName, String nodeAddress, String targetNodeName, String targetNodeAddress) {
         try {
             Socket socket = new Socket(targetNodeAddress.split(":")[0], Integer.parseInt(targetNodeAddress.split(":")[1]));
@@ -182,20 +184,18 @@ public class TemporaryNode implements TemporaryNodeInterface {
     }
 
 
-
-
-
-
     public static void main(String[] args) {
         TemporaryNode node = new TemporaryNode();
-       // TemporaryNode node2 = new TemporaryNode();
-        if (node.start ("david.ferreira-inacio@city.ac.uk:YourNodeName", "127.0.0.1:1400")) {
-          //  node2.start("david.ferreira-inacio@city.ac.uk:NEW", "127.0.0.1:1400");
+        // TemporaryNode node2 = new TemporaryNode();
+        if (node.start("martin.brain@city.ac.uk:martins-implementation-1.0,fullNode-20000", "10.0.0.164:20000")) {
+            //  node2.start("david.ferreira-inacio@city.ac.uk:NEW", "127.0.0.1:1400");
             System.out.println("Connected to the network.");
 
-            String key = "Welcome";
-            String value = "Hello\nWorld!";
-            boolean success = node.store(key, value);
+            String key = "test/jabberwocky/1";
+            //String value = "Hello\nWorld!";
+            String value = node.get(key);
+            System.out.println(value);
+            /*
             if (success) {
                 System.out.println("Successfully stored the key-value pair.");
             } else {
@@ -226,13 +226,12 @@ public class TemporaryNode implements TemporaryNodeInterface {
         }else{
             System.out.println("Failed to connect to the network.");
         }
+*/
+
+        }
 
 
     }
-
-
-
-
 }
 
 
