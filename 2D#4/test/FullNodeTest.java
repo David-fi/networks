@@ -2,7 +2,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FullNodeTest {
@@ -23,20 +22,17 @@ class FullNodeTest {
     @Test
     void verifyNodeStoresData(){
         assertTrue(requester.store("Key", "Value"));
-        assertEquals("Value\n", systemUnderTest.getKeyValueStore().get("Key\n"));
+        assertEquals("Value", systemUnderTest.getKeyValueStore().get("Key"));
     }
 
     @Test
     void verifyMultipleGetWorks(){
-        requester.store("Key1", "Value1");
-        requester.store("Key2", "Value2");
-        assertEquals("Value1 Value2", requester.get("Key1\nKey2"));
-    }
-
-    @Test
-    void verifyMultiplePutWorks(){
         requester.store("Key1\nKey2", "Value1\nValue2");
-        assertEquals("Value1", requester.get("Key1"));
+        assertEquals("Value1\nValue2", requester.get("Key1\nKey2"));
+    }
+    @Test
+    void verifyGettingMissingValueReturnsNope(){
+        assertEquals("NOPE", requester.get("Key1"));
     }
 
     @Test

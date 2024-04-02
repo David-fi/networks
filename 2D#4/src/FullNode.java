@@ -54,7 +54,7 @@ public class FullNode implements FullNodeInterface {
         networkMap.put(new Node(startingNodeName, startingNodeAddress), 0);
         //nodeAddress = startingNodeAddress;
         Executors.newSingleThreadExecutor().execute(() -> {
-            while (true) {
+            while (!serverSocket.isClosed()) {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     Executors.newSingleThreadExecutor().execute(() -> handleClient(clientSocket));
@@ -185,7 +185,7 @@ public class FullNode implements FullNodeInterface {
     private String handleGetRequest(String key) {
         String value = keyValueStore.get(key);
         if (value != null) {
-            return "VALUE "+  value.split("\n", -1).length + "\n" + value;
+            return value;
         } else {
             return "NOPE";
         }
@@ -275,15 +275,6 @@ public class FullNode implements FullNodeInterface {
         }
     }
 
-    public static void main(String[] args) {
-        FullNode node = new FullNode();
-        if (node.listen("localhost", 1400)) {
-            System.out.println("Full Node listening on localhost:1400");
-            node.handleIncomingConnections("david.ferreira-inacio@city.ac.uk:YourNodeName", "127.0.0.1:1400");
-            node.notifyOtherFullNodes();
-        }
-    }
-
     public Map<String, String> getKeyValueStore() {
         return keyValueStore;
     }
@@ -302,6 +293,21 @@ public class FullNode implements FullNodeInterface {
             this.nodeName = nodeName;
             this.nodeAddress = nodeAddress;
         }
+    }
+    public static void main(String[] args) {
+        FullNode node = new FullNode();
+        TemporaryNode requester = new TemporaryNode();
+        if (!node.listen("127.0.0.1", 1500)) {
+            System.err.println("Get good kid");
+        }
+        System.out.println("Full Node listening on 127.0.0.1:1400");
+        node.handleIncomingConnections("whatever you want", "127.0.0.1:1500");
+        node.notifyOtherFullNodes();
+        requester.start("whatever you want","127.0.0.1:1500");
+        requester.store("key1","value1");
+        requester.get("key1");
+        requester.sendEchoRequest();
+        requester.findNearestNodes("key1");
     }
 }
 

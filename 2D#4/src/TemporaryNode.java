@@ -141,9 +141,9 @@ public class TemporaryNode implements TemporaryNodeInterface {
         }
     }
 
-    public void findNearestNodes(String hashID) {
+    public void findNearestNodes(String key) {
         try {
-            sendMessage("NEAREST? " + hashID);
+            sendMessage("NEAREST? " + key);
 
             String response = in.readLine();
             String[] responseParts = response.split(" ");
