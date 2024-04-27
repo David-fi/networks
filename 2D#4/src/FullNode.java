@@ -11,14 +11,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
-
+//testing something
 // DO NOT EDIT starts
 interface FullNodeInterface {
     public boolean listen(String ipAddress, int portNumber);
@@ -154,6 +153,16 @@ public class FullNode implements FullNodeInterface {
         }
     }
 
+    public class Node{
+        public final String nodeName;
+        public final String nodeAddress;
+        public Node(String nodeName, String nodeAddress) {
+            this.nodeName = nodeName;
+            this.nodeAddress = nodeAddress;
+        }
+    }
+
+
     private String handlePutRequest(String key, String value) {
         try {
             byte[] keyHashID = HashID.computeHashID(key + "\n");
@@ -286,29 +295,6 @@ public class FullNode implements FullNodeInterface {
         }
     }
 
-    public class Node{
-        public final String nodeName;
-        public final String nodeAddress;
-        public Node(String nodeName, String nodeAddress) {
-            this.nodeName = nodeName;
-            this.nodeAddress = nodeAddress;
-        }
-    }
-    public static void main(String[] args) {
-        FullNode node = new FullNode();
-        TemporaryNode requester = new TemporaryNode();
-        if (!node.listen("127.0.0.1", 1500)) {
-            System.err.println("Get good kid");
-        }
-        System.out.println("Full Node listening on 127.0.0.1:1400");
-        node.handleIncomingConnections("whatever you want", "127.0.0.1:1500");
-        node.notifyOtherFullNodes();
-        requester.start("whatever you want","127.0.0.1:1500");
-        requester.store("key1","value1");
-        requester.get("key1");
-        requester.sendEchoRequest();
-        requester.findNearestNodes("key1");
-    }
 }
 
 
